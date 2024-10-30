@@ -1,6 +1,9 @@
 import { FC } from "react";
 import { motion as m } from "framer-motion";
 import { Outlet } from "react-router-dom";
+import styled from "styled-components";
+
+/* main */
 
 const MainLayout: FC = () => {
 	const transitions = {
@@ -11,10 +14,17 @@ const MainLayout: FC = () => {
 	};
 
 	return (
-		<m.div {...transitions}>
+		<StyledMain {...transitions}>
 			<Outlet />
-		</m.div>
+		</StyledMain>
 	);
 };
 
 export default MainLayout;
+
+/* styled components */
+
+const StyledMain = styled(m.div)`
+	flex: 1 1 auto;
+	padding: 40px 60px;
+`;

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ModalState {
-	test: boolean;
+	createProject: boolean;
 }
 
 const initialState: ModalState = {
-	test: false,
+	createProject: false,
 };
 
 const modalSlice = createSlice({

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, forwardRef, useState } from "react";
 
 import CheckIcon from "@icons/check.svg?react";
 import WarningIcon from "@icons/warning.svg?react";
@@ -59,7 +59,8 @@ interface InputProps {
 	min?: number;
 	max?: number;
 	step?: number;
-	icon?: React.ReactNode;
+	icon?: FC;
+	onFocus?: () => void;
 	onBlur?: () => void;
 	onChange: (value: string) => void;
 }
@@ -327,67 +328,62 @@ const CaretsContainer = styled.div`
 	}
 `;
 
-const Input: FC<InputProps> = ({
-	type,
-	value,
-	placeholder,
-	disabled,
-	isValid,
-	isDirty,
-	isShowPassword,
-	icon,
-	min,
-	max,
-	step,
-	onBlur,
-	onChange,
-}) => {
-	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-	const [isFocused, setIsFocused] = useState<boolean>(false);
-	const isFilled = value.length > 0;
+const Input = forwardRef<HTMLInputElement, InputProps>(
+	(
+		{ type, value, placeholder, disabled, isValid, isDirty, isShowPassword, icon, min, max, step, onFocus, onBlur, onChange },
+		ref
+	) => {
+		const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+		const [isFocused, setIsFocused] = useState<boolean>(false);
+		const isFilled = value.length > 0;
 
-	const getInputType = (isShowPassword?: boolean, type?: string): string => {
-		return isShowPassword ? (isPasswordVisible ? "text" : "password") : type || "text";
-	};
+		const getInputType = (isShowPassword?: boolean, type?: string): string => {
+			return isShowPassword ? (isPasswordVisible ? "text" : "password") : type || "text";
+		};
 
-	return (
-		<InputWrapper disabled={disabled} valid={isDirty ? isValid : undefined} focus={isFocused} filled={isFilled}>
-			{icon && <InputIcon>{icon}</InputIcon>}
-			<StyledInput
-				icon={icon !== undefined}
-				type={getInputType(isShowPassword, type)}
-				placeholder={placeholder}
-				value={value}
-				onFocus={() => setIsFocused(true)}
-				onBlur={() => {
-					if (onBlur) onBlur();
-					setIsFocused(false);
-				}}
-				min={min}
-				max={max}
-				step={step}
-				disabled={disabled}
-				onChange={(event) => {
-					onChange(event.target.value);
-				}}
-			/>
-			<SideIcons gap={8} alignItems="center">
-				{isShowPassword && (
-					<ToggleVisibility onClick={() => setIsPasswordVisible((state) => !state)}>
-						{isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-					</ToggleVisibility>
-				)}
-				{isValid !== undefined && isDirty && (
-					<StatusIcon isValid={isValid}>{isValid ? <CheckIcon /> : <WarningIcon />}</StatusIcon>
-				)}
-				{type === "number" && (
-					<CaretsContainer>
-						<CaretsIcon />
-					</CaretsContainer>
-				)}
-			</SideIcons>
-		</InputWrapper>
-	);
-};
+		return (
+			<InputWrapper disabled={disabled} valid={isDirty ? isValid : undefined} focus={isFocused} filled={isFilled}>
+				{icon && <InputIcon>{React.createElement(icon)}</InputIcon>}
+				<StyledInput
+					ref={ref}
+					icon={icon !== undefined}
+					type={getInputType(isShowPassword, type)}
+					placeholder={placeholder}
+					value={value}
+					onFocus={() => {
+						if (onFocus) onFocus();
+						setIsFocused(true);
+					}}
+					onBlur={() => {
+						if (onBlur) onBlur();
+						setIsFocused(false);
+					}}
+					min={min}
+					max={max}
+					step={step}
+					disabled={disabled}
+					onChange={(event) => {
+						onChange(event.target.value);
+					}}
+				/>
+				<SideIcons gap={8} alignItems="center">
+					{isShowPassword && (
+						<ToggleVisibility onClick={() => setIsPasswordVisible((state) => !state)}>
+							{isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+						</ToggleVisibility>
+					)}
+					{isValid !== undefined && isDirty && (
+						<StatusIcon isValid={isValid}>{isValid ? <CheckIcon /> : <WarningIcon />}</StatusIcon>
+					)}
+					{type === "number" && (
+						<CaretsContainer>
+							<CaretsIcon />
+						</CaretsContainer>
+					)}
+				</SideIcons>
+			</InputWrapper>
+		);
+	}
+);
 
 export default Input;

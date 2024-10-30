@@ -34,8 +34,11 @@ const GlobalStyles = createGlobalStyle`
 	}
 
 	.wrapper {
-		min-height: 100%;
 		overflow: auto;
+
+		&, > * {
+			height: 100%;
+		}
 	}
 `;
 
