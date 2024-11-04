@@ -1,6 +1,5 @@
 export enum AppRoutes {
-	AllProjects = "/projects/main",
-	Project = "/projects/:name",
+	AllProjects = "/projects",
 	ClickTracker = "/trackers/clicks",
 	ActivityTracker = "/trackers/activity",
 	ViewDatabase = "/view-database",

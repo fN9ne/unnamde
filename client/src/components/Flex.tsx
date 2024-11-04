@@ -53,7 +53,7 @@ const Flex = styled.div.withConfig({ shouldForwardProp })<FlexProps>`
 		itemsPerRow &&
 		`
 		& > * {
-			flex: 1 1 ${getChildSize(itemsPerRow, gap ? (Array.isArray(gap) ? gap[0] : gap) : 0)};
+			flex: 0 0 ${getChildSize(itemsPerRow, gap ? (Array.isArray(gap) ? gap[0] : gap) : 0)};
 		}
 	`}
 `;

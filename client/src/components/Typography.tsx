@@ -16,7 +16,7 @@ export const Title: FC<TitleProps> = ({ sup, children }) => {
 	return (
 		<StyledTitle gap={8}>
 			<span>{children}</span>
-			{sup && <sup>({sup})</sup>}
+			{sup !== undefined && <sup>({sup})</sup>}
 		</StyledTitle>
 	);
 };
@@ -30,4 +30,11 @@ const StyledTitle = styled(Flex)`
 		font-size: 17px;
 		color: var(--500);
 	}
+`;
+
+export const Description = styled.div`
+	font-weight: 500;
+	font-size: 16px;
+	line-height: calc(20 / 16);
+	color: var(--500);
 `;

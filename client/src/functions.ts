@@ -5,12 +5,18 @@ export function setTextAndIconColor(color: string): RuleSet<object> {
 	return css`
 		color: ${color};
 
-		svg.stroke path {
-			stroke: ${color};
+		svg.stroke {
+			path,
+			rect {
+				stroke: ${color};
+			}
 		}
 
-		svg:not(.stroke) path {
-			fill: ${color};
+		svg:not(.stroke) {
+			path,
+			rect {
+				fill: ${color};
+			}
 		}
 	`;
 }
