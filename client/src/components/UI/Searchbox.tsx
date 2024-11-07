@@ -30,7 +30,7 @@ const Searchbox: FC<SearchboxProps> = ({ query, onChange, children }) => {
 
 	useEffect(() => {
 		const handleKeyUp = (event: KeyboardEvent) => {
-			if (event.ctrlKey && event.key === "s") {
+			if (event.ctrlKey && (event.key === "s" || event.key === "ы")) {
 				event.preventDefault();
 
 				if (inputRef.current) inputRef.current.focus();

@@ -10,6 +10,7 @@ import YearContainer from "@/components/YearContainer";
 import MonthContainer from "@/components/MonthContainer";
 import ProjectCard from "@/components/ProjectCard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import styled from "styled-components";
 
 /* main */
 
@@ -51,21 +52,39 @@ const Projects: FC = () => {
 	}, [projects]);
 
 	return (
-		<Flex gap={40} column>
+		<StyledPage gap={40} column>
 			<ProjectsHeader />
-			{Object.entries(data).map(([year, months], index) => (
-				<YearContainer key={index} year={year}>
-					{Object.entries(months).map(([month, projects], index) => (
-						<MonthContainer key={index} monthNumber={+month}>
-							{projects.map((project, index) => (
-								<ProjectCard key={index} {...project} />
-							))}
-						</MonthContainer>
-					))}
-				</YearContainer>
-			))}
-		</Flex>
+			{projects.length > 0 ? (
+				Object.entries(data).map(([year, months], index) => (
+					<YearContainer key={index} year={year}>
+						{Object.entries(months).map(([month, projects], index) => (
+							<MonthContainer key={index} monthNumber={+month}>
+								{projects.map((project, index) => (
+									<ProjectCard key={index} {...project} />
+								))}
+							</MonthContainer>
+						))}
+					</YearContainer>
+				))
+			) : (
+				<Empty justifyContent="center" alignItems="center">
+					I haven't found any projects, so it's empty...
+				</Empty>
+			)}
+		</StyledPage>
 	);
 };
 
 export default Projects;
+
+const StyledPage = styled(Flex)`
+	flex: 1 1 auto;
+`;
+
+const Empty = styled(Flex)`
+	flex: 1 1 auto;
+	font-size: 24px;
+	line-height: calc(20 / 16);
+	color: var(--400);
+	font-weight: 500;
+`;

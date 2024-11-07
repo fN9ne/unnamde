@@ -52,12 +52,12 @@ const ProjectsHeader: FC = () => {
 						findedProjects.map((project, index) => (
 							<DropdownItem
 								key={index}
-								onClick={() => navigate("/projects/" + project.name.toLowerCase().split(" ").join("-"))}
+								onClick={() => navigate("/projects/" + project.id)}
 								gap={10}
 								alignItems="center"
 								padding={[8, 10]}
 							>
-								<img src={project.image} />
+								<img src={`http://localhost:9983/${project.image}`} />
 								<span>{project.name}</span>
 							</DropdownItem>
 						))

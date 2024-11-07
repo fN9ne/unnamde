@@ -57,6 +57,7 @@ interface TitleProps {
 const shouldForwardProp = (prop: string) => !["isVisible"].includes(prop);
 
 const Title = styled(Flex).attrs({ as: "button" }).withConfig({ shouldForwardProp })<TitleProps>`
+	align-self: start;
 	background-color: transparent;
 	font-weight: 700;
 	font-size: 24px;

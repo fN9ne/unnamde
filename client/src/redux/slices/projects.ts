@@ -1,4 +1,5 @@
 import { SortType } from "@/components/ProjectsHeader";
+import { api } from "@/services/api";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ITask {
@@ -32,11 +33,13 @@ export interface IProject {
 interface projectsState {
 	projects: IProject[];
 	sortType: SortType;
+	projectToDelete: number | null;
 }
 
 const initialState: projectsState = {
 	projects: [],
 	sortType: "New ones first",
+	projectToDelete: null,
 };
 
 const projectsSlice = createSlice({
@@ -49,6 +52,18 @@ const projectsSlice = createSlice({
 		setSortType(state, action: PayloadAction<SortType>) {
 			state.sortType = action.payload;
 		},
+		setProjectToDelete(state, action: PayloadAction<number | null>) {
+			state.projectToDelete = action.payload;
+		},
+	},
+	extraReducers: (builder) => {
+		builder
+			.addMatcher(api.endpoints.getProjects.matchFulfilled, (state, { payload }) => {
+				state.projects = payload;
+			})
+			.addMatcher(api.endpoints.deleteProject.matchFulfilled, (state, { payload }) => {
+				state.projects = payload;
+			});
 	},
 });
 

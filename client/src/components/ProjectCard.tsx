@@ -16,6 +16,7 @@ import ProgressCircle from "@icons/progressCircle.svg?react";
 import ModifyIcon from "@icons/modify.svg?react";
 import FlagIcon from "@icons/flag.svg?react";
 import DeployIcon from "@icons/deploy.svg?react";
+import { useNavigate } from "react-router-dom";
 
 /* months */
 
@@ -23,8 +24,10 @@ const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Se
 
 /* main */
 
-const ProjectCard: FC<IProject> = ({ name, image, status, description, lastModifiedAt, finishedAt, createdAt, tasks }) => {
+const ProjectCard: FC<IProject> = ({ id, name, image, status, description, lastModifiedAt, finishedAt, createdAt, tasks }) => {
 	const progress = tasks.filter((task) => task.status === "done").length / (tasks.length / 100) || 0;
+
+	const navigate = useNavigate();
 
 	const formatDate = (date: string): string => {
 		const currentDate = new Date(date);
@@ -35,10 +38,10 @@ const ProjectCard: FC<IProject> = ({ name, image, status, description, lastModif
 	};
 
 	return (
-		<StyledProjectCard column gap={20}>
+		<StyledProjectCard onClick={() => navigate("/projects/" + id)} column gap={20}>
 			<Flex column gap={12}>
 				<ImageContainer>
-					<Image src={image} />
+					<Image src={`http://localhost:9983/${image}`} />
 				</ImageContainer>
 				<Title quantifier={progress} status={status} justifyContent="space-between" alignItems="center">
 					<span>{name.charAt(0).toUpperCase() + name.slice(1)}</span>
@@ -47,7 +50,7 @@ const ProjectCard: FC<IProject> = ({ name, image, status, description, lastModif
 					) : status === "abandoned" ? (
 						<CloseIcon />
 					) : (
-						<Progress progress={progress} gap={8}>
+						<Progress alignItems="end" progress={progress} gap={4}>
 							<span>{Math.round(progress)}%</span>
 							<ProgressCircle />
 						</Progress>
@@ -146,6 +149,10 @@ const Progress = styled(Flex).withConfig({ shouldForwardProp: progressShouldForw
 	font-weight: 600;
 	font-size: 20px;
 	color: ${(props) => progressColors[(Math.round(props.progress / 10) * 10) as keyof typeof progressColors]};
+
+	span {
+		font-size: 16px;
+	}
 
 	svg.stroke {
 		rect:last-child {
